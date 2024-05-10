@@ -1,0 +1,46 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="add-default-value-tables-table" author="via">
+        <insert tableName="my_table">
+            <column name="size" value="42"/>
+            <column name="brand" value="super"/>
+            <column name="color" value="RED"/>
+            <column name="material" value="PLASTIC"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="43"/>
+            <column name="brand" value="puper"/>
+            <column name="color" value="BLUE"/>
+            <column name="material" value="PLASTIC"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="44"/>
+            <column name="brand" value="stol"/>
+            <column name="color" value="WHITE"/>
+            <column name="material" value="MARBLE"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="45"/>
+            <column name="brand" value="stolPlus"/>
+            <column name="color" value="GREEN"/>
+            <column name="material" value="WOOD"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="46"/>
+            <column name="brand" value="furniture"/>
+            <column name="color" value="YELLOW"/>
+            <column name="material" value="FIBERBOARD"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="47"/>
+            <column name="brand" value="furniturePlus"/>
+            <column name="color" value="GREEN"/>
+            <column name="material" value="WOOD"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="48"/>
+            <column name="brand" value="furnitureMinus"/>
+            <column name="color" value="BLACK"/>
+            <column name="material" value="FIBERBOARD"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
