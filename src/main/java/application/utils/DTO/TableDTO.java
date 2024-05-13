@@ -12,9 +12,14 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class TableDTO {
+
     private Long id;
+
     private Long size;
+
     private String brand;
+
     private Color color;
+
     private Material material;
 }
