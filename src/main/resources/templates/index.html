@@ -13,16 +13,36 @@
         <th>Brand</th>
         <th>Color</th>
         <th>Material</th>
+        <th><link></th>
     </tr>
     <tr th:each="table : ${listOfTables}">
-
         <td th:utext="${table.size}">...</td>
         <td th:utext="${table.brand}">...</td>
         <td th:utext="${table.color}">...</td>
         <td th:utext="${table.material}">...</td>
     </tr>
 </table>
+
+<form th:action="@{/addTable}"
+      th:object=" ${addTable}" method="POST">
+    <input type="hidden" th:object="${page}">
+    Size:
+    <input type="text" th:field="*{size}"/>
+    <br/>
+    brand:
+    <input type="text" th:field="*{brand}"/>
+    <br/>
+    color:
+    <input type="text" th:field="*{color}"/>
+    <br/>
+    material:
+    <input type="text" th:field="*{material}"/>
+    <br/>
+    <input type="submit" value="Добавить стол"/>
+</form>
+
 </body>
+
 <!--<head>-->
 <!--    <meta http-equiv="Content-Type" content="text/html" ; charset="UTF-8">-->
 <!--    <title>Welcome_page</title>-->

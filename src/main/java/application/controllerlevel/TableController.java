@@ -1,8 +1,10 @@
 package application.controllerlevel;
 
 import application.servicelevel.TableService;
+import application.utils.DTO.PaginationDto;
 import application.utils.DTO.TableDTO;
 import com.sun.istack.NotNull;
+import org.h2.engine.Mode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,12 +22,12 @@ public class TableController {
     private TableService tableService;
 
     @GetMapping(path = "/tables")
-    public String getTables(@NotNull @RequestParam int page,
-                             @NotNull @RequestParam int size,
+    public String getTables(@NotNull @RequestParam(defaultValue = "0") int page,
                             Model model) {
-
-        tableService.getTables(page, size);
-        model.addAttribute("listOfTables", tableService.getTables(page, size));
+        model.addAttribute("addTable", new PaginationDto());
+        model.addAttribute("page", page);
+        tableService.getTables(page, 5);
+        model.addAttribute("listOfTables", tableService.getTables(page, 5));
         return "index";
     }
 
@@ -40,10 +42,11 @@ public class TableController {
         return tableService.readTables(search);
     }
 
-    @PostMapping(path = "/create")
-    public ResponseEntity<TableDTO> saveTable(@RequestBody TableDTO tableDTO) {
-        tableService.addTable(tableDTO);
-        return new ResponseEntity<>(tableDTO, HttpStatus.OK);
+    @PostMapping(path = "/addTable")
+    public void saveTable(@NotNull @RequestParam int page,
+                            @ModelAttribute("addTable") TableDTO tableDTO, PaginationDto paginationDto) {
+        tableService.addTable(tableDTO) != null ? getTables() : "errors";
+
         //TODO обработать фейлы в save
     }
 
