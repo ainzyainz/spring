@@ -12,7 +12,7 @@ public interface TableService {
 
     TableDTO addTable(TableDTO tableDTO);
 
-    List<TableDTO> readTables(String search);
+    List<TableDTO> readTables(String search,int page);
 
     void deleteTable(Long id);
 

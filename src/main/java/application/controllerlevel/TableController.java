@@ -1,5 +1,6 @@
 package application.controllerlevel;
 
+import application.entity.Table;
 import application.servicelevel.TableService;
 import application.utils.DTO.TableDTO;
 import com.sun.istack.NotNull;
@@ -34,8 +35,12 @@ public class TableController {
     }
 
     @GetMapping(path = "/read/{search}")
-    public List<TableDTO> readTables(@PathVariable String search) {
-        return tableService.readTables(search);
+    public String readTables(@PathVariable String search,
+                             @RequestParam(defaultValue = "0")int page, Model model) {
+        model.addAttribute("addTable",new TableDTO());
+        model.addAttribute("page",page);
+        model.addAttribute("listOfTables",tableService.readTables(search,page));
+        return "index";
     }
 
     @PostMapping(path = "/addTable")

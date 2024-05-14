@@ -70,15 +70,15 @@ class TableServiceImplTest {
     void readTablesTest() {
         Table table = tableRepository.save(createTable2());
 
-        List<TableDTO> list1 = tableService.readTables(table.getColor().toString());
+        List<TableDTO> list1 = tableService.readTables(table.getColor().toString(),0);
         Assert.assertEquals("Find by color not assert", 1, list1.size());
         searchAssert(list1, table);
 
-        List<TableDTO> list2 = tableService.readTables(table.getBrand());
+        List<TableDTO> list2 = tableService.readTables(table.getBrand(),0);
         Assert.assertEquals("Find by brand not assert", 1, list2.size());
         searchAssert(list2, table);
 
-        List<TableDTO> list3 = tableService.readTables(table.getMaterial().toString());
+        List<TableDTO> list3 = tableService.readTables(table.getMaterial().toString(),0);
         Assert.assertEquals("Find by material not assert", 1, list3.size());
         searchAssert(list3, table);
 

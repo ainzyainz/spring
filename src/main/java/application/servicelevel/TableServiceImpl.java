@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -41,7 +42,8 @@ public class TableServiceImpl implements TableService {
     }
 
     public TableDTO addTable(TableDTO tableDTO) {
-        return tableMapper.toDTO(tableRepository.save(tableMapper.toEntity(tableDTO)));
+        return tableDTO != null ? tableMapper.toDTO(tableRepository.save(tableMapper.toEntity(tableDTO)))
+                : null;
     }
 
     public TableDTO editTable(Long id, TableDTO tableDTO) {
@@ -54,7 +56,7 @@ public class TableServiceImpl implements TableService {
         return null;
     }
 
-    public List<TableDTO> readTables(String search) {
+    public List<TableDTO> readTables(String search,int page) {
         List<Table> tables = new ArrayList<>();
         if (EnumUtils.isValidEnumIgnoreCase(Color.class, search)) {
             tables.addAll(tableRepository.findByColor(Color.valueOf(search)));
@@ -63,8 +65,12 @@ public class TableServiceImpl implements TableService {
             tables.addAll(tableRepository.findByMaterial(Material.valueOf(search)));
         }
         tables.addAll(tableRepository.findByBrand(search));
-
-        return tables.stream()
+        PagedListHolder pagedListHolder = new PagedListHolder(tables);
+        pagedListHolder.setPage(page);
+        pagedListHolder.setPageSize(5);
+        List<Table> resultPage = pagedListHolder.getPageList();
+        System.out.println(resultPage);
+        return resultPage.stream()
                 .map(tableMapper::toDTO)
                 .collect(Collectors.toList());
     }
