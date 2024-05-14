@@ -31,6 +31,6 @@ public class Table {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Material  material;
+    private Material material;
 
 }

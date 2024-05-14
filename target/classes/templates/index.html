@@ -1,0 +1,152 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>MainPage</title>
+    <link href="style.css">
+</head>
+<style>
+    div {
+        border-top: 2vw;
+        text-align: center;
+    }
+
+    select {
+        width: 11vw;
+        height: 1.5vw;
+    }
+
+    table {
+        margin: auto;
+        border-collapse: collapse;
+    }
+    td {
+        border: 1px solid black;
+        font-size: 18px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    th {
+        border: 1px solid black;
+        padding: 1vw;
+        text-align: center;
+        margin: 5px
+    }
+
+</style>
+
+<body>
+    <form th:action="@{/read}"  method="get">
+        <div >
+            <label >
+                <input type="text" name="search"  placeholder="Find table">
+            </label>
+            <button>Search</button>
+        </div>
+    </form>
+<div>
+    <table style="width: 60%;">
+        <tr>
+            <th>Size</th>
+            <th>Brand</th>
+            <th>Color</th>
+            <th>Material</th>
+        </tr>
+        <tr th:each="table : ${pageLoader.getList()}">
+
+            <td th:utext="${table.size}">...</td>
+            <td th:utext="${table.brand}">...</td>
+            <td th:utext="${table.color}">...</td>
+            <td th:utext="${table.material}">...</td>
+            <td style="border: none; text-align: left;">
+                <form style="border: none; " th:action="@{/delete}" method="POST">
+                    <button style="margin-top: 0.5vw;"> delete
+                        <input type="hidden" name="page" th:value="${page}">
+                        <input type='hidden' name="tableId" th:value="${table.id}">
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<p th:value="${addMessage}"></p>
+
+<div>
+    <table>
+        <form th:action="@{/addTable}"
+              th:object="${addTable}" method="POST">
+            <input type="hidden" name="page" th:value="${page}">
+
+            <tr>
+                <td style="border: none;"> Size:</td>
+                <td style="border: none;"><input type="text" th:field="*{size}"/></td>
+            </tr>
+
+            <tr>
+                <td style="border: none;"> Brand:</td>
+                <td style="border: none;"><input type="text" th:field="*{brand}"/></td>
+            </tr>
+
+            <tr>
+                <td style="border: none;">Color:</td>
+                <td style="border: none;"><select th:field="*{color}">
+                    <option value="RED">red</option>
+                    <option value="BLUE">blue</option>
+                    <option value="WHITE">white</option>
+                    <option value="YELLOW">yellow</option>
+                    <option value="GREEN">green</option>
+                    <option value="BLACK">black</option>
+                    <option value="GRAY">gray</option>
+                </select>
+                </td>
+            </tr>
+            <br/>
+            <tr>
+                <td style="border: none;">Material:</td>
+                <td style="border: none;"><select th:field="*{material}">
+                    <option value="PLASTIC">plastic</option>
+                    <option value="WOOD">wood</option>
+                    <option value="MARBLE">marble</option>
+                    <option value="FIBERBOARD">fiberboard</option>
+                </select>
+                </td>
+            </tr>
+            <br/>
+            <tr>
+                <td style="border: none;"></td>
+                <td style="border: none;"><input style="float: right;" type="submit" value="Добавить стол"/></td>
+            </tr>
+        </form>
+    </table>
+
+    <div th:if="${pageLoader.totalPages > 0}">
+        <div class="pagination-optional">
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=0)}"
+               th:text="1"/>
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=1)}"
+               th:text="2"/>
+        </div>
+
+        <a th:if="${page!=0}"
+           th:href="@{/tables(page=${page}-1)}"
+           th:text="${page}"/>
+        <p th:text="${page+1}"> </p>
+        <a th:if="${page!=pageLoader.totalPages}"
+           th:href="@{/tables(page=${page}+1)}"
+           th:text="${page}+2"/>
+
+        <div class="pagination-optional">
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=${pageLoader.totalPages}-1)}"
+               th:text="${pageLoader.totalPages}"/>
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=${pageLoader.totalPages})}"
+               th:text="${pageLoader.totalPages+1}"/>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

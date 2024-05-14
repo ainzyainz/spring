@@ -1,11 +1,6 @@
 package application;
 
-import application.entity.Table;
-import application.utils.DTO.TableDTO;
-import application.utils.converter.TableMapper;
-import application.utils.enums.Color;
-import application.utils.enums.Material;
-import org.mapstruct.factory.Mappers;
+import application.servicelevel.TableServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
