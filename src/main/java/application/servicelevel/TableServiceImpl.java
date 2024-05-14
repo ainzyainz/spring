@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.EnumUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -26,47 +27,61 @@ import java.util.stream.Collectors;
 @Transactional
 @Service
 public class TableServiceImpl implements TableService {
+
     //TODO добавить проверки на нуллы и пустые строки lang3
     private final TableMapper tableMapper = Mappers.getMapper(TableMapper.class);
+
     @Autowired
     private final TableRepository tableRepository;
-    
+
     public List<TableDTO> getTables(int page, int size) {
-        Pageable pageable = PageRequest.of(page,size);
+        Pageable pageable = PageRequest.of(page, size);
         Page<Table> tables = tableRepository.findAll(pageable);
         List<Table> list = tables.getContent();
         return list.stream().map(tableMapper::toDTO).collect(Collectors.toList());
     }
-    public void addTable(TableDTO tableDTO){
-        tableRepository.save(tableMapper.toEntity(tableDTO));
+
+    public TableDTO addTable(TableDTO tableDTO) {
+        return tableDTO != null ? tableMapper.toDTO(tableRepository.save(tableMapper.toEntity(tableDTO))) : null;
     }
-    public boolean editTable(Long id, TableDTO tableDTO){
+
+    public TableDTO editTable(Long id, TableDTO tableDTO) {
         Optional<Table> oldTable = tableRepository.findById(id);
-        if (oldTable.isPresent()){
+        if (oldTable.isPresent()) {
             Table table = tableMapper.toEntity(tableDTO);
             table.setId(id);
-            tableRepository.save(table);
-            return true;
+            return tableMapper.toDTO(tableRepository.save(table));
         }
-        return false;
+        return null;
     }
 
-    public List<TableDTO> readTable(String search){
+    public List<TableDTO> readTables(String search, int page) {
         List<Table> tables = new ArrayList<>();
-        if (EnumUtils.isValidEnumIgnoreCase(Color.class,search)){
-            tables.addAll(tableRepository.findByColor(Color.valueOf(search)));
+        if (EnumUtils.isValidEnumIgnoreCase(Color.class, search)) {
+            tables.addAll(tableRepository.findByColor(Color.valueOf(search.toUpperCase())));
         }
-        if (EnumUtils.isValidEnumIgnoreCase(Material.class,search)){
-            tables.addAll(tableRepository.findByMaterial(Material.valueOf(search)));
+        if (EnumUtils.isValidEnumIgnoreCase(Material.class, search)) {
+            tables.addAll(tableRepository.findByMaterial(Material.valueOf(search.toUpperCase())));
         }
         tables.addAll(tableRepository.findByBrand(search));
+        PagedListHolder pagedListHolder = new PagedListHolder(tables);
+        pagedListHolder.setPage(page);
+        pagedListHolder.setPageSize(5);
+        List<Table> resultPage = pagedListHolder.getPageList();
 
-        return tables.stream()
+        return resultPage.stream()
                 .map(tableMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public void deleteTable(Long id){
+    public void deleteTable(Long id) {
         tableRepository.deleteById(id);
+    }
+
+    public List<TableDTO> readAll() {
+        return tableRepository.findAll()
+                .stream()
+                .map(tableMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

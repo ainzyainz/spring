@@ -10,8 +10,12 @@ import java.util.List;
 
 @Repository
 public interface TableRepository extends JpaRepository<Table, Long> {
+
     List<Table> findByMaterial(Material material);
+
     List<Table> findByColor(Color color);
+
     List<Table> findByBrand(String brand);
 
+    List<Table> findAll();
 }
