@@ -38,7 +38,7 @@
             <th>Color</th>
             <th>Material</th>
         </tr>
-        <tr th:each="table : ${listTables}">
+        <tr th:each="table : ${pageLoader.getList()}">
 
             <td th:utext="${table.size}">...</td>
             <td th:utext="${table.brand}">...</td>
@@ -54,8 +54,42 @@
             </td>
         </tr>
     </table>
-</div>
+    <div th:if="${pageLoader.totalPages > 0}">
+        <div class="pagination-optional">
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/read(page=0,search=${search})}"
+               th:text="1"/>
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/read(page=1,search=${search})}"
+               th:text="2"/>
+        </div>
 
+        <a th:if="${page!=0}"
+           th:href="@{/read(page=${page}-1, search=${search})}"
+           th:text="${page}"/>
+        <p th:text="${page+1}"> </p>
+        <a th:if="${page!=pageLoader.totalPages}"
+           th:href="@{/read(page=${page}+1, search=${search})}"
+           th:text="${page}+2"/>
+
+        <div class="pagination-optional">
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/read(page=${pageLoader.totalPages}-1,search=${search})}"
+               th:text="${pageLoader.totalPages}"/>
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/read(page=${pageLoader.totalPages},search=${search})}"
+               th:text="${pageLoader.totalPages+1}"/>
+        </div>
+    </div>
+    <!--<div th:if="${pageLoader.totalPages > 0}" class="pagination"
+         th:if="${page!=0}"
+         th:each="pageNumber : ${pageLoader.pageNumbers}">
+        <a style="display: inline-block" th:href="@{/read(page=${pageNumber}, search=${search})}"
+           th:text="${page+1}"
+           th:class="${pageNumber==page + 1} ? active"></a>
+
+    </div>
+-->
 <p th:value="${addMessage}"></p>
 </body>
 </html>

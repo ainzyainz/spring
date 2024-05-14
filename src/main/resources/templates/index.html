@@ -51,7 +51,7 @@
             <th>Color</th>
             <th>Material</th>
         </tr>
-        <tr th:each="table : ${listOfTables}">
+        <tr th:each="table : ${pageLoader.getList()}">
 
             <td th:utext="${table.size}">...</td>
             <td th:utext="${table.brand}">...</td>
@@ -119,22 +119,33 @@
         </form>
     </table>
 
+    <div th:if="${pageLoader.totalPages > 0}">
+        <div class="pagination-optional">
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=0)}"
+               th:text="1"/>
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=1)}"
+               th:text="2"/>
+        </div>
 
-    <form th:action="@{/tables}"
-           method="GET">
-        <button>
-            <output th:text="${page+1}"></output>
-       <input style="border: none" type="hidden" name="page" th:value="${page}"/>
-        </button>
-    </form>
+        <a th:if="${page!=0}"
+           th:href="@{/tables(page=${page}-1)}"
+           th:text="${page}"/>
+        <p th:text="${page+1}"> </p>
+        <a th:if="${page!=pageLoader.totalPages}"
+           th:href="@{/tables(page=${page}+1)}"
+           th:text="${page}+2"/>
 
-    <form th:action="@{/tables}"
-          method="GET">
-        <button>
-            <output th:text="${page+2}"></output>
-            <input style="border: none" type="hidden" name="page" th:value="${page+1}"/>
-        </button>
-    </form>
+        <div class="pagination-optional">
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=${pageLoader.totalPages}-1)}"
+               th:text="${pageLoader.totalPages}"/>
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=${pageLoader.totalPages})}"
+               th:text="${pageLoader.totalPages+1}"/>
+        </div>
+    </div>
 
 </div>
 </body>

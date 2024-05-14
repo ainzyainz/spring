@@ -2,6 +2,7 @@ package application.servicelevel;
 
 import application.entity.Table;
 import application.repositorylevel.repository.TableRepository;
+import application.utils.DTO.PageDTO;
 import application.utils.DTO.TableDTO;
 import application.utils.converter.TableMapper;
 import application.utils.enums.Color;
@@ -21,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 
 @RequiredArgsConstructor
@@ -34,10 +37,24 @@ public class TableServiceImpl implements TableService {
     @Autowired
     private final TableRepository tableRepository;
 
+    public PageDTO buildPageDTO(List<TableDTO> list, int page){
+        long totalPages = list.size()/5;
+
+        PagedListHolder pagedListHolder = new PagedListHolder(list);
+        pagedListHolder.setPage(page);
+        pagedListHolder.setPageSize(5);
+        List<TableDTO> resultPage = pagedListHolder.getPageList();
+
+        return PageDTO.builder()
+                .list(resultPage)
+                .totalPages(totalPages)
+                .pageNumbers(LongStream.rangeClosed(1, totalPages)
+                        .boxed()
+                        .collect(Collectors.toList()))
+                .build();
+    }
     public List<TableDTO> getTables(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Table> tables = tableRepository.findAll(pageable);
-        List<Table> list = tables.getContent();
+        List<Table> list = tableRepository.findAll();
         return list.stream().map(tableMapper::toDTO).collect(Collectors.toList());
     }
 
@@ -64,12 +81,7 @@ public class TableServiceImpl implements TableService {
             tables.addAll(tableRepository.findByMaterial(Material.valueOf(search.toUpperCase())));
         }
         tables.addAll(tableRepository.findByBrand(search));
-        PagedListHolder pagedListHolder = new PagedListHolder(tables);
-        pagedListHolder.setPage(page);
-        pagedListHolder.setPageSize(5);
-        List<Table> resultPage = pagedListHolder.getPageList();
-
-        return resultPage.stream()
+        return tables.stream()
                 .map(tableMapper::toDTO)
                 .collect(Collectors.toList());
     }
