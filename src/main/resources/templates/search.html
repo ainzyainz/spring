@@ -1,0 +1,61 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>MainPage</title>
+    <link href="style.css">
+</head>
+<style>
+    div {
+        border-top: 2vw;
+        text-align: center;
+    }
+   
+    table {
+        margin: auto;
+        border-collapse: collapse;
+        width: 60%;
+    }
+    td {
+        border: 1px solid black;
+        font-size: 18px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    th {
+        border: 1px solid black;
+        padding: 1vw;
+        text-align: center;
+        margin: 5px
+    }
+
+</style>
+
+<body>
+    <table>
+        <tr>
+            <th>Size</th>
+            <th>Brand</th>
+            <th>Color</th>
+            <th>Material</th>
+        </tr>
+        <tr th:each="table : ${listTables}">
+
+            <td th:utext="${table.size}">...</td>
+            <td th:utext="${table.brand}">...</td>
+            <td th:utext="${table.color}">...</td>
+            <td th:utext="${table.material}">...</td>
+            <td style="border: none; text-align: left;">
+                <form style="border: none; " th:action="@{/delete}" method="POST">
+                    <button style="margin-top: 0.5vw;"> delete
+                        <input type="hidden" name="page" th:value="${page}">
+                        <input type='hidden' name="tableId" th:value="${table.id}">
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<p th:value="${addMessage}"></p>
+</body>
+</html>
