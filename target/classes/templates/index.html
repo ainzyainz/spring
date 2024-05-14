@@ -1,0 +1,106 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+<title>MainPage</title>
+<link href="style.css">
+</head>
+
+<body>
+
+<table border="1">
+    <tr>
+        <th>Size</th>
+        <th>Brand</th>
+        <th>Color</th>
+        <th>Material</th>
+    </tr>
+    <tr th:each="table : ${listOfTables}">
+
+        <td th:utext="${table.size}">...</td>
+        <td th:utext="${table.brand}">...</td>
+        <td th:utext="${table.color}">...</td>
+        <td th:utext="${table.material}">...</td>
+        <td><button>
+            <a th:href="@{/delete(id= ${table.id}, page=${page})}">delete</a>
+        </button></td>
+    </tr>
+</table>
+
+<p th:value="${addMessage}"></p>
+
+<div>
+
+    <form th:action="@{/addTable}"
+          th:object="${addTable}" method="POST">
+        <input type="hidden" name="page" th:value="${page}">
+        Size:
+        <input type="text" th:field="*{size}"/>
+        <br/>
+        Brand:
+        <input type="text" th:field="*{brand}"/>
+        <br/>
+        Color:
+                    <select th:field="*{color}">
+                        <option value="RED">red</option>
+                        <option value="BLUE">blue</option>
+                        <option value="WHITE">white</option>
+                        <option value="YELLOW">yellow</option>
+                        <option value="GREEN">green</option>
+                        <option value="BLACK">black</option>
+                        <option value="GRAY">gray</option>
+                    </select>
+        <br/>
+        Material:
+                <select th:field="*{material}">
+                    <option value="PLASTIC">plastic</option>
+                    <option value="WOOD">wood</option>
+                    <option value="MARBLE">marble</option>
+                    <option value="FIBERBOARD">fiberboard</option>
+                </select>
+        <br/>
+        <input type="submit" value="Добавить стол"/>
+    </form>
+</div>
+</body>
+<!--<head>-->
+<!--    <meta http-equiv="Content-Type" content="text/html" ; charset="UTF-8">-->
+<!--    <title>Welcome_page</title>-->
+<!--    <script src="http://code.jquery.com/jquery-3.1.1.min.js"/>-->
+
+
+<!--    <script>-->
+<!--        function addProduct() {-->
+<!--            $.ajax({-->
+<!--                dataType: "json",-->
+<!--                type: 'get',-->
+<!--                url: "/cities",-->
+<!--            }).done(function (data) {-->
+<!--                console.log(data);-->
+
+<!--                $.each(data, function (index, value) {-->
+<!--                    $('#city').val($('#city').val() + "; name: " + value.name + " id: " + value.id);-->
+<!--                })-->
+<!--            }).fail(function (data) {-->
+<!--                if (console && console.log) {-->
+<!--                    console.log("Error data: ", data);-->
+<!--                }-->
+<!--            });-->
+<!--        }-->
+<!--    </script>-->
+
+<!--</head>-->
+
+<!--<body>-->
+<!--<h1>Добро пожаловать</h1>-->
+<!--<i>${cities}</i>-->
+<!--<input type="button" id="send" name="получить города" value="нажать"/>-->
+<!--<input type="text" id="city" size="255"/>-->
+<!--</body>-->
+<!--<script>-->
+<!--    $(document).ready(function () {-->
+<!--        $('#send').click(function () {-->
+<!--            addProduct();-->
+<!--        });-->
+<!--    })-->
+<!--</script>-->
+</html>
