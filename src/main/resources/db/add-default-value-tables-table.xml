@@ -42,5 +42,20 @@
             <column name="color" value="BLACK"/>
             <column name="material" value="FIBERBOARD"/>
         </insert>
+
+        <insert tableName="my_table">
+            <column name="size" value="55"/>
+            <column name="brand" value="Alivar"/>
+            <column name="color" value="WHITE"/>
+            <column name="material" value="WOOD"/>
+        </insert>
+
+        <insert tableName="my_table">
+            <column name="size" value="45"/>
+            <column name="brand" value="Alivar"/>
+            <column name="color" value="GRAY"/>
+            <column name="material" value="WOOD"/>
+        </insert>
+
     </changeSet>
 </databaseChangeLog>
