@@ -1,45 +1,69 @@
 package application.controllerlevel;
 
-import application.servicelevel.TableServiceImpl;
-import application.utils.DTO.TableDTO;
+import application.servicelevel.TableService;
+import application.DTO.PageDTO;
+import application.DTO.TableDTO;
 import com.sun.istack.NotNull;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import static application.utils.constant.ConstantContainer.*;
+
 @Controller
+@RequiredArgsConstructor
 public class TableController {
-    @Autowired
-    public TableServiceImpl tableService;
+
+    private final TableService tableService;
 
     @GetMapping(path = "/tables")
-    public @ResponseBody List<TableDTO> getTables(@NotNull @RequestParam int page,
-                                 @NotNull @RequestParam int size){
-        return tableService.getTables(page,size);
+    public String getTables(@NotNull
+                            @RequestParam(defaultValue = PAGE_DEFAULT_VALUE) int page,
+                            Model model) {
+        PageDTO pageDTO = tableService.buildPageDTO(tableService.getTables(), page);
+        model.addAttribute(ADD_TABLE, new TableDTO());
+        model.addAttribute(PAGE_LOADER, pageDTO);
+        model.addAttribute(PAGE, page);
+        return INDEX;
     }
-    @GetMapping(path = "/read/{search}")
-    public List<TableDTO> readTables(@PathVariable String search) {
-        return tableService.readTable(search);
+
+    @GetMapping(path = "/read")
+    public String readTables(@RequestParam(defaultValue = "null") String search, @RequestParam(defaultValue = "0") int page, Model model) {
+        PageDTO pageDTO = tableService.buildPageDTO(tableService.readTables(search, page), page);
+        model.addAttribute(PAGE, page);
+        model.addAttribute(PAGE_LOADER, pageDTO);
+        model.addAttribute(SEARCH, search);
+        model.addAttribute(LIST_TABLE, pageDTO.getList());
+        return SEARCH;
     }
-    @PostMapping(path = "/create")
-    public ResponseEntity<TableDTO> saveTable(@RequestBody TableDTO tableDTO){
-        tableService.addTable(tableDTO);
-        return new ResponseEntity<>(tableDTO, HttpStatus.OK);
-        //TODO обработать фейлы в save
+
+    @PostMapping(path = "/addTable")
+    public String saveTable(@ModelAttribute("addTable") TableDTO tableDTO, @RequestParam(defaultValue = "0") int page,
+                            Model model) {
+        model.addAttribute(ADD_MESSAGE, CREATE_SUCCESSFUL);
+        return tableService.addTable(tableDTO) != null ? getTables(page, model) : getError();
     }
-    @PostMapping(path = "/update/{id}")
-    public ResponseEntity<TableDTO> updateTable(@PathVariable Long id, @RequestBody TableDTO tableDTO){
-        return tableService.editTable(id,tableDTO) ? new ResponseEntity<>(tableDTO,HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    @PostMapping(path = "/update")
+    public String updateTable(@RequestParam(defaultValue = "0") Long tableId, @RequestParam(defaultValue = "0") int page,
+                             @NotNull @ModelAttribute("updateTable") TableDTO tableDTO, Model model) {
+        tableService.editTable(tableId, tableDTO);
+        model.addAttribute(ADD_MESSAGE, UPDATE_SUCCESSFUL);
+        return getTables(page, model);
     }
-    @PostMapping(path = "delete/{id}")
-    public ResponseEntity<HttpStatus> deleteTable(@PathVariable Long id) {
-        tableService.deleteTable(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+
+    @PostMapping(path = "/delete")
+    public String deleteTable(@RequestParam(defaultValue = "0") Long tableId,
+                              @RequestParam(defaultValue = "0") int page, Model model) {
+        tableService.deleteTable(tableId);
+        model.addAttribute(ADD_MESSAGE, DELETE_SUCCESSFUL);
+        return getTables(page, model);
+    }
+
+    @GetMapping(path = "/error")
+    private String getError() {
+        return ERROR;
     }
 
 }
