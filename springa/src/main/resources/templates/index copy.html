@@ -1,0 +1,206 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>MainPage</title>
+    <link href="style.css">
+</head>
+<style>
+    div {
+        border-top: 2vw;
+        text-align: center;
+    }
+
+    select {
+        width: 11vw;
+        height: 1.5vw;
+    }
+
+    table {
+        margin: auto;
+        border-collapse: collapse;
+    }
+    td {
+        border: 1px solid black;
+        font-size: 18px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    th {
+        border: 1px solid black;
+        padding: 1vw;
+        text-align: center;
+        margin: 5px
+    }
+    #zatemnenie {
+        background: rgba(102, 102, 102, 0.5);
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: none;
+      }
+      #okno {
+        width: 30%;
+        height: 30%;
+        text-align: center;
+        padding: 15px;
+        border: 3px solid #0000cc;
+        border-radius: 10px;
+        color: #0000cc;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        background: #fff;
+      }
+      #zatemnenie:target {display: block;}
+      .close {
+        display: inline-block;
+        border: 1px solid #0000cc;
+        color: #0000cc;
+        padding: 0 12px;
+        margin: 10px;
+        text-decoration: none;
+        background: #f2f2f2;
+        font-size: 14pt;
+        cursor:pointer;
+      }
+      .close:hover {background: #e6e6ff;}
+</style>
+
+<body>
+    <form th:action="@{/read}"  method="get">
+        <div >
+            <label >
+                <input type="text" name="search"  placeholder="Find table">
+            </label>
+            <button>Search</button>
+        </div>
+    </form>
+<div>
+    <table style="width: 60%; margin-left: 25vw;">
+        <tr>
+            <th>Size</th>
+            <th>Brand</th>
+            <th>Color</th>
+            <th>Material</th>
+        </tr>
+        <tr th:each="table : ${pageLoader.getList()}">
+
+            <td th:utext="${table.size}">...</td>
+            <td th:utext="${table.brand}">...</td>
+            <td th:utext="${table.color}">...</td>
+            <td th:utext="${table.material}">...</td>
+
+            <td style="border: none; padding-left: 1vw; text-align:left; width: 3vw;">
+                <form style="border: none; " th:action="@{/delete}" method="POST">
+                    <button style="margin-top: 0.5vw;"> delete
+                        <input type="hidden" name="page" th:value="${page}">
+                        <input type='hidden' name="tableId" th:value="${table.id}">
+                    </button>
+                </form>
+            </td>
+
+            <td style="border: none; text-align: left; padding-left: 1vw; ">
+                <button style="margin-top: -0.6vw;"> 
+                    <a href="#zatemnenie">edit</a>
+            </button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<p th:value="${addMessage}"></p>
+
+<div>
+    <table>
+        <form th:action="@{/addTable}"
+              th:object="${addTable}" method="POST">
+            <input type="hidden" name="page" th:value="${page}">
+
+            <tr>
+                <td style="border: none;"> Size:</td>
+                <td style="border: none;"><input type="text" th:field="*{size}"/></td>
+            </tr>
+
+            <tr>
+                <td style="border: none;"> Brand:</td>
+                <td style="border: none;"><input type="text" th:field="*{brand}"/></td>
+            </tr>
+
+            <tr>
+                <td style="border: none;">Color:</td>
+                <td style="border: none;"><select th:field="*{color}">
+                    <option value="RED">red</option>
+                    <option value="BLUE">blue</option>
+                    <option value="WHITE">white</option>
+                    <option value="YELLOW">yellow</option>
+                    <option value="GREEN">green</option>
+                    <option value="BLACK">black</option>
+                    <option value="GRAY">gray</option>
+                </select>
+                </td>
+            </tr>
+            <br/>
+            <tr>
+                <td style="border: none;">Material:</td>
+                <td style="border: none;"><select th:field="*{material}">
+                    <option value="PLASTIC">plastic</option>
+                    <option value="WOOD">wood</option>
+                    <option value="MARBLE">marble</option>
+                    <option value="FIBERBOARD">fiberboard</option>
+                </select>
+                </td>
+            </tr>
+            <br/>
+            <tr>
+                <td style="border: none;"></td>
+                <td style="border: none;"><input style="float: right;" type="submit" value="Add table"/></td>
+            </tr>
+        </form>
+    </table>
+
+    <div th:if="${pageLoader.totalPages > 0}">
+        <div class="pagination-optional">
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=0)}"
+               th:text="1"></a>
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=1)}"
+               th:text="2"></a>
+        </div>
+
+        <a th:if="${page!=0}"
+           th:href="@{/tables(page=${page}-1)}"
+           th:text="${page}"></a>
+        <p th:text="${page+1}"> </p>
+        <a th:if="${page!=pageLoader.totalPages}"
+           th:href="@{/tables(page=${page}+1)}"
+           th:text="${page}+2"></a>
+
+        <div class="pagination-optional">
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=${pageLoader.totalPages}-1)}"
+               th:text="${pageLoader.totalPages}"></a>
+            <a th:if="${pageLoader.totalPages>4}"
+               th:href="@{/tables(page=${pageLoader.totalPages})}"
+               th:text="${pageLoader.totalPages+1}"></a>
+        </div>
+    </div>
+</div>
+
+<div id="zatemnenie">
+    <div id="okno">
+       <table style="border-collapse: collapse; border-color: black;">
+        <tr>table</tr>
+        <td>my table</td>
+       </table>
+     
+    </div>
+  </div>
+
+</body>
+</html>

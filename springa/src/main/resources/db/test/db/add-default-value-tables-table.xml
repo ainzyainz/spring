@@ -1,0 +1,34 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="add-default-value-tables-table" author="via">
+        <insert tableName="h2_test_table">
+            <column name="size" value="11"/>
+            <column name="brand" value="test1"/>
+            <column name="color" value="RED"/>
+            <column name="material" value="PLASTIC"/>
+        </insert>
+
+        <insert tableName="h2_test_table">
+            <column name="size" value="12"/>
+            <column name="brand" value="test2"/>
+            <column name="color" value="WHITE"/>
+            <column name="material" value="PLASTIC"/>
+        </insert>
+
+        <insert tableName="h2_test_table">
+            <column name="size" value="13"/>
+            <column name="brand" value="test3"/>
+            <column name="color" value="BLACK"/>
+            <column name="material" value="PLASTIC"/>
+        </insert>
+
+        <insert tableName="h2_test_table">
+            <column name="size" value="14"/>
+            <column name="brand" value="test4"/>
+            <column name="color" value="BLUE"/>
+            <column name="material" value="PLASTIC"/>
+        </insert>
+
+    </changeSet>
+</databaseChangeLog>
+
+<!--http://localhost:8080/h2-console-->

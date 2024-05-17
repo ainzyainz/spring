@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit table</title>
+</head>
+<body>
+<h1>Editing the table</h1>
+<div>
+  <form th:action="@{/update}"
+        th:object="${tableToUpdate}" method="post">
+    <input type="hidden" name="page" th:value="${page}">
+    <input type="hidden" th:field="*{id}" th:value="${tableToUpdate.id}"/>
+    <input type="text" th:field="*{size}"/>
+    <input type="text" th:field="*{brand}"/>
+    <br>
+    <label>Edit color</label>
+    <select th:field="*{color}">
+      <option th:each="color_val : ${colors}"
+              th:text="${color_val.getStringColor()}"
+              th:value="${color_val.getStringColor().toUpperCase()}"></option>
+    </select>
+
+    <label>Edit material</label>
+    <select th:field="*{material}">
+      <option th:each="material_val : ${materials}"
+              th:text="${material_val.getStringMaterial()}"
+              th:value="${material_val.getStringMaterial().toUpperCase()}"></option>
+    </select>
+    <input type="submit" value="Edit table"/>
+  </form>
+</div>
+</body>
+</html>

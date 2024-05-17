@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Table</title>
+</head>
+<body>
+<h1>Adding a new table</h1>
+<div>
+    <form th:action="@{/addTable}"
+    th:object="${addTable}" method="post">
+    <input type="hidden" name="page" th:value="${page}">
+        <input type="text" th:field="*{size}"/>
+        <input type="text" th:field="*{brand}"/>
+        <br>
+        <label>Add color</label>
+            <select th:field="*{color}">
+            <option th:each="color_val : ${colors}"
+                    th:text="${color_val.getStringColor()}"
+                    th:value="${color_val.getStringColor().toUpperCase()}"></option>
+            </select>
+
+        <label>Add material</label>
+            <select th:field="*{material}">
+                <option th:each="material_val : ${materials}"
+                        th:text="${material_val.getStringMaterial()}"
+                        th:value="${material_val.getStringMaterial().toUpperCase()}"></option>
+            </select>
+        <input type="submit" value="Add table"/>
+    </form>
+</div>
+</body>
+</html>
