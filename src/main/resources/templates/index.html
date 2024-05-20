@@ -1,0 +1,201 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>MainPage</title>
+</head>
+<style>
+    div {
+        border-top: 2vw;
+        text-align: center;
+    }
+    select {
+        width: 11vw;
+        height: 1.5vw;
+    }
+    table {
+        margin: auto;
+        border-collapse: collapse;
+    }
+    td {
+        border: 1px solid black;
+        font-size: 18px;
+        text-align: center;
+        vertical-align: middle;
+    }
+    th {
+        border: 1px solid black;
+        padding: 1vw;
+        text-align: center;
+        margin: 5px
+    }
+    .sorted {
+        border: none;
+        background: none;
+        font-size: 18px;
+        color: blue
+    }
+    .addTable {
+        margin-left: 25.5%;
+        margin-top: 1%
+    }
+    .edit {
+        border: none;
+        text-align: left;
+        padding-left: 1vw;
+    }
+    .delete{
+        border: none;
+        padding-left: 1vw;
+        text-align:left;
+        width: 3vw;
+    }
+</style>
+
+<body>
+<form th:action="@{/read}" method="get">
+    <div>
+        <label>
+            <input type="text" name="search" placeholder="Find table">
+        </label>
+        <button>Search</button>
+    </div>
+</form>
+
+<div>
+    <table style="width: 60%; margin-left: 25vw;">
+        <tr>
+            <th>
+                <form th:action="@{/sort}" method="get">
+                    <a href="">
+                        <input type="hidden" name="field" value='size'>
+                        <input type="hidden" name="search" th:value="${search}">
+                        <input type='hidden' name="page" th:value="${page}">
+                        <button class="sorted"><u>Size</u></button>
+                    </a>
+                </form>
+            </th>
+            <th>
+                <form th:action="@{/sort}" method="get">
+                    <a href="">
+                        <input type="hidden" name="field" value='brand'>
+                        <input type="hidden" name="search" th:value="${search}">
+                        <input type='hidden' name="page" th:value="${page}">
+                        <button class="sorted"><u>Brand</u></button>
+                    </a>
+                </form>
+            </th>
+            <th>
+                <form th:action="@{/sort}" method="get">
+                    <a href="">
+                        <input type="hidden" name="field" value='color'>
+                        <input type="hidden" name="search" th:value="${search}">
+                        <input type='hidden' name="page" th:value="${page}">
+                        <button class="sorted"><u>Color</u></button>
+                    </a>
+                </form>
+            </th>
+            <th>
+                <form th:action="@{/sort}" method="get">
+                    <a href="">
+                        <input type="hidden" name="field" value='material'>
+                        <input type="hidden" name="search" th:value="${search}">
+                        <input type="hidden" name="page" th:value="${page}">
+                        <button class="sorted"><u>Material</u></button>
+                    </a>
+                </form>
+            </th>
+            <th style="border: none">
+                <form th:action="@{/sort}" method="get">
+                    <input type="hidden" name="field" th:value="null">
+                    <input type="hidden" name="search" th:value="null">
+                    <input type="hidden" name="page" th:value="${page}">
+                <button>reset</button>
+                </form>
+            </th>
+        </tr>
+        <tr th:each="table : ${pageLoader.getList()}">
+
+            <td th:utext="${table.size}">...</td>
+            <td th:utext="${table.brand}">...</td>
+            <td th:utext="${table.color}">...</td>
+            <td th:utext="${table.material}">...</td>
+
+            <td class="delete">
+                <form style="border: none; " th:action="@{/delete}" method="POST">
+                    <button style="margin-top: 0.5vw;"> delete
+                        <input type='hidden' name="page" th:value="${page}">
+                        <input type='hidden' name="tableId" th:value="${table.id}">
+                    </button>
+                </form>
+            </td>
+
+            <td class="edit">
+                <form th:action="@{/displayEdit}" method="get">
+                    <button style="margin-top: 0.5vw;"> Edit table
+                    <input type="hidden" name="id" th:value="${table.id}"/>
+                    <input type="hidden" name="page" th:value="${page}">
+                    </button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<form class="addTable" th:action="@{/displayAdd}" method="get">
+    <input type="hidden" name="page" th:value="${page}">
+    <input type="submit" value="Add table"/>
+</form>
+
+<p th:value="${addMessage}"></p>
+
+<div>
+    <table style="border: none;">
+        <p th:if="${pageLoader.totalPages > 0}">
+
+            <tr style="border: none;">
+                <div style=" margin-right: 10vw" class="pagination-optional">
+                    <td style="border: none; text-align: left; width: 2vw">
+                        <a th:if="${pageLoader.totalPages > 1}"
+                           th:href="@{/sort(page = 0, field = ${field}, search = ${search})}"
+                           th:text="1"></a>
+                    </td>
+
+                </div>
+        </p>
+
+
+        <td style="border: none;">
+            <a th:if="${page != 0}"
+               th:href="@{/sort(page = ${page} - 1, field = ${field}, search = ${search})}"
+               th:text="${page}"></a>
+        </td>
+        <td style="border: none;">
+            <p th:text="${page + 1}"></p>
+        </td>
+
+        <td style="border: none;">
+            <a th:if="${page != pageLoader.totalPages}"
+               th:href="@{/sort(page = ${page} + 1, field = ${field}, search = ${search})}"
+               th:text="${page} + 2"></a>
+        </td>
+
+
+        <div class="pagination-optional" style="margin-left: 16vw; float:right ">
+            <td style="border: none; text-align: right; width: 2vw ">
+                <a th:if="${pageLoader.totalPages > 0}"
+                   th:href="@{/sort(page = ${pageLoader.totalPages}, field = ${field}, search = ${search})}"
+                   th:text="${pageLoader.totalPages + 1}"></a>
+            </td>
+        </div>
+
+        </tr>
+    </table>
+
+    <p>Поиск организован при помощи критерии. Есть сортировка столбцов, но она не работает в поиске.
+        Поиск по нескольким параметрам не реализован. Нужно добить эту критерию.
+        Разобраться с пагинацией (если на 3 странице добавить 5 значений ,будет выведена 4 страница).
+        Разложить на три maven module: controller, service,  repository. Из основного, вроде бы, всё</p>
+</div>
+
+</body>
+</html>
