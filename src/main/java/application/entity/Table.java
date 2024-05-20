@@ -1,11 +1,8 @@
 package application.entity;
 
-import application.utils.enums.Color;
-import application.utils.enums.Material;
 import lombok.*;
 
 import javax.persistence.*;
-
 
 @Builder
 @AllArgsConstructor
@@ -31,6 +28,6 @@ public class Table {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Material  material;
+    private Material material;
 
 }

@@ -1,0 +1,88 @@
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    <changeSet id="add-default-value-tables-table" author="via">
+        <insert tableName="my_table">
+            <column name="size" value="12"/>
+            <column name="brand" value="super"/>
+            <column name="color" value="RED"/>
+            <column name="material" value="PLASTIC"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="43"/>
+            <column name="brand" value="puper"/>
+            <column name="color" value="BLUE"/>
+            <column name="material" value="PLASTIC"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="44"/>
+            <column name="brand" value="stol"/>
+            <column name="color" value="WHITE"/>
+            <column name="material" value="MARBLE"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="25"/>
+            <column name="brand" value="stolPlus"/>
+            <column name="color" value="GREEN"/>
+            <column name="material" value="WOOD"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="16"/>
+            <column name="brand" value="furniture"/>
+            <column name="color" value="YELLOW"/>
+            <column name="material" value="FIBERBOARD"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="47"/>
+            <column name="brand" value="furniturePlus"/>
+            <column name="color" value="GREEN"/>
+            <column name="material" value="WOOD"/>
+        </insert>
+        <insert tableName="my_table">
+            <column name="size" value="88"/>
+            <column name="brand" value="furnitureMinus"/>
+            <column name="color" value="BLACK"/>
+            <column name="material" value="FIBERBOARD"/>
+        </insert>
+
+        <insert tableName="my_table">
+            <column name="size" value="55"/>
+            <column name="brand" value="Alivar"/>
+            <column name="color" value="WHITE"/>
+            <column name="material" value="WOOD"/>
+        </insert>
+
+        <insert tableName="my_table">
+            <column name="size" value="45"/>
+            <column name="brand" value="ABC"/>
+            <column name="color" value="GRAY"/>
+            <column name="material" value="WOOD"/>
+        </insert>
+
+        <insert tableName="my_table">
+            <column name="size" value="5"/>
+            <column name="brand" value="Apple"/>
+            <column name="color" value="BLACK"/>
+            <column name="material" value="STEEL"/>
+        </insert>
+
+        <insert tableName="my_table">
+            <column name="size" value="115"/>
+            <column name="brand" value="Sony"/>
+            <column name="color" value="YELLOW"/>
+            <column name="material" value="WOOD"/>
+        </insert>
+
+        <insert tableName="my_table">
+            <column name="size" value="13"/>
+            <column name="brand" value="TEKA"/>
+            <column name="color" value="WHITE"/>
+            <column name="material" value="FIBERBOARD"/>
+        </insert>
+
+        <insert tableName="my_table">
+            <column name="size" value="85"/>
+            <column name="brand" value="SHWING"/>
+            <column name="color" value="RED"/>
+            <column name="material" value="MARBLE"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

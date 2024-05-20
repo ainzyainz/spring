@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>New Table</title>
+</head>
+<body>
+<h1>Adding a new table</h1>
+<div>
+    <form th:action="@{/addTable}"
+          th:object="${addTable}" method="post">
+        <table>
+            <input type="hidden" name="page" th:value="${page}">
+            <tr>
+                <td><label>Add size</label></td>
+                <td><input type="text" th:field="*{size}"/></td>
+            </tr>
+            <br>
+            <tr>
+                <td><label>Add brand</label></td>
+                <td><input type="text" th:field="*{brand}"/></td>
+            </tr>
+            <br>
+            <tr>
+                <td><label>Add color</label></td>
+                <td>
+                    <select th:field="*{color}">
+                        <option th:each="color_val : ${colors}"
+                                th:text="${color_val.getStringColor()}"
+                                th:value="${color_val.getStringColor().toUpperCase()}">
+                        </option>
+                    </select>
+                </td>
+            </tr>
+            <br>
+            <tr>
+                <td><label>Add material</label></td>
+                <td>
+                    <select th:field="*{material}">
+                        <option th:each="material_val : ${materials}"
+                                th:text="${material_val.getStringMaterial()}"
+                                th:value="${material_val.getStringMaterial().toUpperCase()}">
+                        </option>
+                    </select>
+                </td>
+        </table>
+        <input type="submit" value="Add table"/>
+    </form>
+</div>
+</body>
+</html>

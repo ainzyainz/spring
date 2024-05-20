@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit table</title>
+</head>
+
+<style>
+    td {
+        width: 7vw;
+    }
+</style>
+<body>
+<h1>Editing the table</h1>
+<div>
+    <form th:action="@{/update}"
+          th:object="${tableToUpdate}" method="post">
+        <input type="hidden" name="page" th:value="${page}">
+        <input type="hidden" th:field="*{id}" th:value="${tableToUpdate.id}"/>
+        <table>
+            <tr>
+                <td><label>Edit size</label></td>
+                <td><input style="text-align: center" type="text" th:field="*{size}"/></td>
+            </tr>
+            </br>
+            <tr>
+                <td><label>Edit brand</label></td>
+                <td><input style="text-align: center" type="text" th:field="*{brand}"/></td>
+            </tr>
+            </br>
+            <tr>
+                <td><label>Edit color</label></td>
+                <td>
+                    <select th:field="*{color}">
+                        <option th:each="color_val : ${colors}"
+                                th:text="${color_val.getStringColor()}"
+                                th:value="${color_val.getStringColor().toUpperCase()}"></option>
+                    </select>
+                </td>
+            </tr>
+            </br>
+            <tr>
+                <td><label>Edit material</label></td>
+                <td>
+                    <select th:field="*{material}">
+                        <option th:each="material_val : ${materials}"
+                                th:text="${material_val.getStringMaterial()}"
+                                th:value="${material_val.getStringMaterial().toUpperCase()}"></option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        </br>
+        <input type="submit" value="Edit table"/>
+
+    </form>
+</div>
+</body>
+</html>
