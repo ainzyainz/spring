@@ -4,8 +4,8 @@ import lombok.*;
 
 import java.util.List;
 
-@Builder
 @Data
+@Builder
 public class PageDTO {
 
     private int pageNumber;

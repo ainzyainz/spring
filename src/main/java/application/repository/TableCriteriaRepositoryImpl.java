@@ -60,7 +60,9 @@ public class TableCriteriaRepositoryImpl implements TableCriteriaRepository {
             if (EnumUtils.isValidEnumIgnoreCase(Material.class, search)) {
                 predicates.add(criteriaBuilder.equal(tableRoot.get(MATERIAL), Material.valueOf(search.toUpperCase())));
             }
-            predicates.add(criteriaBuilder.like(criteriaBuilder.lower(tableRoot.get(BRAND)), pattern.toLowerCase()));
+            if (predicates.isEmpty()) {
+                predicates.add(criteriaBuilder.like(tableRoot.get(BRAND), pattern.toLowerCase()));
+            }
         }
         return predicates;
     }

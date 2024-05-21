@@ -174,7 +174,7 @@
         </td>
 
         <td style="border: none;">
-            <a th:if="${page != pageLoader.totalPages}"
+            <a th:if="${page < pageLoader.totalPages}"
                th:href="@{/sort(page = ${page} + 1, field = ${field}, search = ${search})}"
                th:text="${page} + 2"></a>
         </td>
@@ -190,11 +190,6 @@
 
         </tr>
     </table>
-
-    <p>Поиск организован при помощи критерии. Есть сортировка столбцов, но она не работает в поиске.
-        Поиск по нескольким параметрам не реализован. Нужно добить эту критерию.
-        Разобраться с пагинацией (если на 3 странице добавить 5 значений ,будет выведена 4 страница).
-        Разложить на три maven module: controller, service,  repository. Из основного, вроде бы, всё</p>
 </div>
 
 </body>

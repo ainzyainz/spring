@@ -2,8 +2,7 @@ package application.service;
 
 import application.entity.Table;
 import application.repository.TableRepository;
-import application.DTO.PageDTO;
-import application.DTO.TableDTO;
+import application.DTO.*;
 import application.converter.TableMapper;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,12 +86,12 @@ public class TableServiceImpl implements TableService {
         pagedListHolder.setPageSize(ROW_IN_MAIN_PAGE);
         List<TableDTO> resultPage = pagedListHolder.getPageList();
 
-        return PageDTO.builder()
-                .list(resultPage)
+        return PageDTO.builder().
+                list(resultPage)
                 .totalPages(totalPages)
                 .pageNumbers(LongStream.rangeClosed(FIRST_PAGE, totalPages)
                         .boxed()
-                        .collect(Collectors.toList()))
-                .build();
+                        .collect(Collectors.toList())).build();
+
     }
 }
