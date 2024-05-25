@@ -1,7 +1,6 @@
 package application.utils.DTO;
 
-import application.utils.enums.Color;
-import application.utils.enums.Material;
+import application.entity.*;
 import lombok.*;
 
 @Builder
